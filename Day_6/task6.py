@@ -11,17 +11,22 @@ def parse_set(data):
     return ans
 
 
+# For part 1 use data and parse_set function on data
 input_filepath = './input.txt'
 answers = []
 with open(input_filepath, 'r') as f_in:
+    # data = ''
     group_data = []
     for line in f_in:
         line = line.strip()
         if line:
+            # data = data+line
             group_data.append(line)
         else:
             answers.append(parse_list_sets(group_data))
+            # data = ''
             group_data = []
+# if data:
 if group_data:
     answers.append(parse_list_sets(group_data))
 

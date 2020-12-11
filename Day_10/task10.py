@@ -39,19 +39,19 @@ with open(input_filepath, 'r') as f_in:
 
 input.sort()
 device_input = input[-1] +3
-print(device_input)
+print("Device input", device_input)
 input.append(device_input)
 
 res = extend_chain([0], input, [])
 res = res[0]
-print(len(res), len(input))
-print(res[-1])
+assert len(res) == len(input) +1
 jolt_diffs = get_diffs(res)
-print(jolt_diffs.count(1)*jolt_diffs.count(3))
+print("Part 1", jolt_diffs.count(1)*jolt_diffs.count(3))
 
+# Numpaths for any adapter is the sum of the paths to get to all possible previous adapters
+# So sum of all adapters with 1,2,3 fewer jolts
 # Add the 0 jolt adapter to the start of our chain, before we passed [0] in as the root
 input.insert(0,0)
-print(input)
 num_paths = []
 for i in input:
     num_paths.append(0)
@@ -59,11 +59,12 @@ for i in input:
 num_paths[0] = 1
 for i in range(1, len(num_paths)):
     jolts = input[i]
-    for j in range(len(num_paths)):
+    # Sorted list means only the 3 preceding adapters could be in range
+    for j in range(i-3,i):
         prev = input[j]
-        if 0 < (jolts - prev) <= 3:
+        # Sorted list means no need to check > 0
+        if (jolts - prev) <= 3:
             num_paths[i] = num_paths[i] + num_paths[j]
 
-print(num_paths)
-print(num_paths[-1])
+print("Answer is", num_paths[-1])
 
